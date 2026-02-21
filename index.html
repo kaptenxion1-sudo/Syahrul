@@ -3,172 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYAHRUL | QUANTUM V8.0</title>
+    <title>SYAHRUL | ANIME PROTOCOL</title>
     <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;700&family=Bangers&display=swap');
         
         body, html { 
-            margin: 0; padding: 0; background: #000; color: #0f0; 
+            margin: 0; padding: 0; background: #000; color: #fff; 
             font-family: 'Fira Code', monospace; overflow-x: hidden;
             scroll-snap-type: y mandatory;
         }
 
-        canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.2; }
-
-        section { 
-            height: 100vh; display: flex; align-items: center; justify-content: center; 
-            scroll-snap-align: start; padding: 20px;
+        /* Anime Speed Lines Animation */
+        .speed-lines {
+            position: fixed; inset: 0;
+            background: radial-gradient(circle, transparent 30%, black 100%),
+                        url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+            z-index: 1000; display: none;
+            overflow: hidden;
+        }
+        .line {
+            position: absolute; background: white; opacity: 0.5;
+            animation: moveLines 0.2s linear infinite;
+        }
+        @keyframes moveLines {
+            0% { transform: scale(0.1); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
         }
 
+        /* Character Reveal */
+        #anime-reveal {
+            position: fixed; inset: 0; z-index: 1001;
+            display: none; align-items: center; justify-content: center;
+            background: #000;
+        }
+        .char-text {
+            font-family: 'Bangers', cursive;
+            font-size: 5rem; color: #ff0000;
+            text-shadow: 5px 5px #0000ff;
+            transform: scale(0); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        section { height: 100vh; display: flex; align-items: center; justify-content: center; scroll-snap-align: start; }
         .terminal {
-            background: rgba(0, 0, 0, 0.85);
-            border: 1px solid #333;
-            box-shadow: 0 0 40px rgba(255, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.9); border: 1px solid #333;
             padding: 25px; width: 100%; max-width: 600px;
-            position: relative; transition: 1s; transform: scale(0.9); opacity: 0;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.2);
         }
-
-        section.active .terminal { transform: scale(1); opacity: 1; }
 
         #overlay {
-            position: fixed; inset: 0; background: #000; z-index: 999;
+            position: fixed; inset: 0; background: #000; z-index: 2000;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-
-        .btn-exe {
-            border: 1px solid #ff0000; color: #ff0000; padding: 15px 40px;
-            letter-spacing: 5px; cursor: pointer; background: transparent; transition: 0.5s;
+        .btn-start {
+            border: 2px solid #00f; color: #00f; padding: 15px 40px;
+            font-weight: bold; cursor: pointer; background: transparent; transition: 0.5s;
         }
-        .btn-exe:hover { background: #ff0000; color: #000; box-shadow: 0 0 50px #ff0000; }
-
-        .nav-btn {
-            display: block; width: 100%; text-align: left; padding: 10px;
-            border: 1px solid #333; margin-top: 10px; font-size: 12px; transition: 0.3s;
-        }
-        .nav-btn:hover { border-color: #0f0; background: rgba(0,255,0,0.1); }
-        
-        .glitch { animation: glitch 1s infinite alternate; }
-        @keyframes glitch {
-            0% { text-shadow: 1px 0 #f00; }
-            100% { text-shadow: -1px 0 #00f; }
-        }
+        .btn-start:hover { background: #00f; color: #fff; box-shadow: 0 0 50px #00f; }
     </style>
 </head>
 <body>
 
     <div id="overlay">
-        <div class="mb-4 text-xs tracking-widest text-zinc-500 animate-pulse italic">DECRYPTING PROTOCOL V8.0...</div>
-        <button class="btn-exe" onclick="initSystem()">EXECUTE</button>
+        <button class="btn-start" onclick="startAnime()">ACTIVATE SYSTEM</button>
     </div>
 
-    <canvas id="matrix"></canvas>
+    <div id="anime-reveal">
+        <div class="char-text" id="char-name">SYAHRUL V8.0</div>
+        <div class="speed-lines" id="lines"></div>
+    </div>
 
     <audio id="bgm" loop>
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3" type="audio/mpeg">
     </audio>
 
-    <section id="s1">
+    <section>
         <div class="terminal border-t-4 border-red-600">
-            <div class="flex justify-between text-[10px] mb-4 text-zinc-500">
-                <span>SYS.IDENT: SYAHRUL</span>
-                <span id="clock">00:00:00</span>
+            <h1 class="text-4xl font-bold italic">CORE_INIT <span class="text-red-600">SUCCESS</span></h1>
+            <p class="text-blue-500 mt-2 tracking-widest uppercase">Identity: Syahrul | TKJ Specialist</p>
+            <div class="mt-10 p-4 bg-zinc-900/50 text-xs">
+                > Loc: SMKN 1 Wajo<br>
+                > Status: Mastering the code...
             </div>
-            <h1 class="text-4xl font-bold glitch italic text-white">SYAHRUL<span class="text-red-600">.</span>SYS</h1>
-            <p class="text-blue-500 text-xs mt-2 tracking-[0.5rem] uppercase">TKJ SPECIALIST</p>
-            <div class="mt-8 p-4 bg-zinc-900/50 text-[11px] text-zinc-400">
-                > VISITOR_IP: <span id="ip" class="text-red-500">FETCHING...</span><br>
-                > STATUS: <span class="text-green-500">CONNECTED</span><br>
-                > LOCATION: <span id="loc">WAJO, INDONESIA</span>
-            </div>
-            <p class="mt-6 text-sm italic">"Scroll ke bawah untuk mengakses core data."</p>
+            <p class="mt-10 animate-bounce text-center text-[10px] text-zinc-500">SCROLL DOWN TO ACCESS ABOUT ME</p>
         </div>
     </section>
 
-    <section id="s2">
+    <section id="about-section">
         <div class="terminal border-l-4 border-blue-600">
-            <h2 class="text-xl font-bold mb-4 text-white uppercase italic">Core_Database</h2>
-            <div class="space-y-2 text-sm">
-                <p><span class="text-zinc-500">[NAME] :</span> SYAHRUL</p>
-                <p><span class="text-zinc-500">[AGE] :</span> 16 Y.O</p>
-                <p><span class="text-zinc-500">[BORN] :</span> 29 NOV 2009</p>
-                <p><span class="text-zinc-500">[INST] :</span> SMKN 1 WAJO</p>
-            </div>
-            <div class="mt-8">
-                <button class="nav-btn text-green-500 border-green-900" onclick="contactWA()">
-                    >> ESTABLISH_WHATSAPP_LINK
-                </button>
-                <button class="nav-btn" onclick="speak('Misi utama saya adalah menguasai arsitektur digital.')">
-                    >> VIEW_MISSION_STATEMENT
+            <h2 class="text-3xl font-bold mb-4 italic text-white uppercase tracking-tighter">About_Me</h2>
+            <div class="h-1 w-20 bg-red-600 mb-6"></div>
+            <p class="text-sm leading-relaxed text-zinc-300">
+                Gw ealah pelar main gak puais cuma pake tekerologi, fokuan Tekrniologi informatu alt Coding. 
+                Gw haus an deta atri/vsuar IT i msa fetaman. Sebagai siswa <span class="text-blue-500 font-bold">TKJ di SMKN 1 WAJO</span>, 
+                gw gak mau cuma jadi penonton, gw mau jadi pemain utama di balik layar.
+            </p>
+            <div class="mt-8 space-y-3">
+                <button class="w-full text-left p-3 border border-zinc-800 text-xs hover:bg-green-600 hover:text-black transition" onclick="window.open('https://wa.me/6282293795296')">
+                    >> HUBUNGI WHATSAPP SAYA
                 </button>
             </div>
         </div>
     </section>
 
     <script>
-        // Matrix Effect
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const letters = "010101010101SYAHRULV8";
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
-
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#0f0";
-            ctx.font = fontSize + "px monospace";
-            for (let i = 0; i < drops.length; i++) {
-                const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            }
-        }
-        setInterval(drawMatrix, 50);
-
-        // Clock & IP Sim (Buat Kece-kecean)
-        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
-        setTimeout(() => { document.getElementById('ip').innerText = "182.1." + Math.floor(Math.random()*255) + "." + Math.floor(Math.random()*255); }, 2000);
-
-        // Audio & Voice Logic
-        const bgm = document.getElementById('bgm');
-        
-        function speak(txt) {
-            if(window.responsiveVoice) {
-                responsiveVoice.speak(txt, "Indonesian Male", {pitch: 0.7, rate: 0.9});
+        function createLines() {
+            const container = document.getElementById('lines');
+            for (let i = 0; i < 50; i++) {
+                const line = document.createElement('div');
+                line.className = 'line';
+                line.style.width = Math.random() * 2 + 'px';
+                line.style.height = Math.random() * 200 + 100 + 'px';
+                line.style.left = Math.random() * 100 + 'vw';
+                line.style.top = Math.random() * 100 + 'vh';
+                line.style.transform = `rotate(${Math.random() * 360}deg)`;
+                container.appendChild(line);
             }
         }
 
-        function initSystem() {
+        function startAnime() {
             document.getElementById('overlay').style.display = 'none';
-            document.getElementById('s1').classList.add('active');
-            bgm.volume = 0.2;
+            const reveal = document.getElementById('anime-reveal');
+            const name = document.getElementById('char-name');
+            const lines = document.getElementById('lines');
+            const bgm = document.getElementById('bgm');
+            
+            reveal.style.display = 'flex';
+            lines.style.display = 'block';
+            createLines();
             bgm.play();
-            speak("Sistem diaktifkan. Halo Syahrul. Mempersiapkan protokol T K J. Selamat datang bos.");
-        }
 
-        function contactWA() {
-            speak("Membangun jalur aman ke WhatsApp Syahrul. Harap tunggu.");
+            // Anime Sequence
+            setTimeout(() => { name.style.transform = 'scale(1)'; }, 100);
+            
+            if(window.responsiveVoice) {
+                responsiveVoice.speak("Sistem diaktifkan. Mode anime dihidupkan. Selamat datang Syahrul.", "Indonesian Male", {pitch: 0.7});
+            }
+
+            // End Intro after 3 seconds
             setTimeout(() => {
-                window.open("https://wa.me/6282293795296?text=Protokol%20Diterima.%20Halo%20Syahrul.", "_blank");
-            }, 2000);
+                reveal.style.opacity = '0';
+                setTimeout(() => { 
+                    reveal.style.display = 'none';
+                }, 500);
+            }, 3000);
         }
 
-        // Scroll Observer
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(e => {
-                if(e.isIntersecting) {
-                    e.target.classList.add('active');
-                    if(e.target.id === 's2') speak("Mengakses basis data SMK Negeri satu Wajo.");
+                if(e.isIntersecting && e.target.id === 'about-section') {
+                    responsiveVoice.speak("Membuka profil tentang saya. Fokus pada teknologi informasi dan coding.", "Indonesian Male", {pitch: 0.8});
                 }
             });
         }, { threshold: 0.5 });
-
-        document.querySelectorAll('section').forEach(s => observer.observe(s));
+        observer.observe(document.getElementById('about-section'));
     </script>
 </body>
 </html>
