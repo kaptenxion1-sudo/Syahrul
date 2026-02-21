@@ -3,76 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYAHRUL | ANIME PROTOCOL</title>
+    <title>SYAHRUL | ANIME VERSION</title>
     <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;700&family=Bangers&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@700&family=Bangers&display=swap');
         
-        body, html { 
-            margin: 0; padding: 0; background: #000; color: #fff; 
-            font-family: 'Fira Code', monospace; overflow-x: hidden;
-            scroll-snap-type: y mandatory;
-        }
+        body { margin: 0; background: #000; color: #fff; font-family: 'Fira Code', monospace; overflow-x: hidden; }
 
-        /* Anime Speed Lines Animation */
-        .speed-lines {
-            position: fixed; inset: 0;
-            background: radial-gradient(circle, transparent 30%, black 100%),
-                        url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
-            z-index: 1000; display: none;
+        /* INTRO ANIME LAYER */
+        #anime-intro {
+            position: fixed; inset: 0; z-index: 9999;
+            background: #000; display: none;
+            align-items: center; justify-content: center;
             overflow: hidden;
         }
-        .line {
-            position: absolute; background: white; opacity: 0.5;
-            animation: moveLines 0.2s linear infinite;
-        }
-        @keyframes moveLines {
-            0% { transform: scale(0.1); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: scale(1.5); opacity: 0; }
+
+        .speed-line {
+            position: absolute; background: #fff;
+            width: 2px; height: 1000px; opacity: 0.6;
+            animation: anime-speed 0.1s linear infinite;
         }
 
-        /* Character Reveal */
-        #anime-reveal {
-            position: fixed; inset: 0; z-index: 1001;
-            display: none; align-items: center; justify-content: center;
-            background: #000;
+        @keyframes anime-speed {
+            0% { transform: translateY(-100%) rotate(45deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(100%) rotate(45deg); opacity: 0; }
         }
-        .char-text {
+
+        .anime-title {
             font-family: 'Bangers', cursive;
             font-size: 5rem; color: #ff0000;
-            text-shadow: 5px 5px #0000ff;
-            transform: scale(0); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-shadow: 0 0 20px #fff, 5px 5px #0000ff;
+            z-index: 10001; transform: scale(0);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        section { height: 100vh; display: flex; align-items: center; justify-content: center; scroll-snap-align: start; }
-        .terminal {
-            background: rgba(0, 0, 0, 0.9); border: 1px solid #333;
-            padding: 25px; width: 100%; max-width: 600px;
-            box-shadow: 0 0 50px rgba(255, 0, 0, 0.2);
+        .flash {
+            position: fixed; inset: 0; background: #fff; z-index: 10002;
+            opacity: 0; pointer-events: none;
         }
+
+        /* WEB CONTENT */
+        section { height: 100vh; display: flex; align-items: center; justify-content: center; scroll-snap-align: start; }
+        .terminal { background: rgba(20, 20, 20, 0.9); border: 1px solid #333; padding: 25px; width: 90%; max-width: 600px; box-shadow: 0 0 50px rgba(255,0,0,0.3); }
 
         #overlay {
-            position: fixed; inset: 0; background: #000; z-index: 2000;
+            position: fixed; inset: 0; background: #000; z-index: 10005;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .btn-start {
-            border: 2px solid #00f; color: #00f; padding: 15px 40px;
-            font-weight: bold; cursor: pointer; background: transparent; transition: 0.5s;
-        }
-        .btn-start:hover { background: #00f; color: #fff; box-shadow: 0 0 50px #00f; }
     </style>
 </head>
 <body>
 
     <div id="overlay">
-        <button class="btn-start" onclick="startAnime()">ACTIVATE SYSTEM</button>
+        <button class="px-10 py-4 border-2 border-blue-600 text-blue-600 font-bold hover:bg-blue-600 hover:text-white transition" onclick="triggerAnime()">
+            ACTIVATE SYSTEM
+        </button>
     </div>
 
-    <div id="anime-reveal">
-        <div class="char-text" id="char-name">SYAHRUL V8.0</div>
-        <div class="speed-lines" id="lines"></div>
+    <div id="anime-intro">
+        <div id="line-container"></div>
+        <div class="anime-title" id="anime-text">SYAHRUL V8.0</div>
+        <div class="flash" id="flash-effect"></div>
     </div>
 
     <audio id="bgm" loop>
@@ -81,84 +74,63 @@
 
     <section>
         <div class="terminal border-t-4 border-red-600">
-            <h1 class="text-4xl font-bold italic">CORE_INIT <span class="text-red-600">SUCCESS</span></h1>
-            <p class="text-blue-500 mt-2 tracking-widest uppercase">Identity: Syahrul | TKJ Specialist</p>
-            <div class="mt-10 p-4 bg-zinc-900/50 text-xs">
-                > Loc: SMKN 1 Wajo<br>
-                > Status: Mastering the code...
+            <h1 class="text-4xl font-bold italic mb-4">CORE_ACTIVE</h1>
+            <p class="text-blue-500 tracking-widest uppercase text-sm font-bold">SYAHRUL | TKJ SPECIALIST</p>
+            <div class="mt-8 p-4 bg-black/50 border border-zinc-800">
+                <p class="text-[11px] text-zinc-400 font-bold uppercase mb-2">>> About Me:</p>
+                <p class="text-sm italic leading-relaxed text-white">
+                    "Gw ealah pelar main gak puais cuma pake tekerologi, fokuan Tekrniologi informatu alt Coding. Gw haus an deta atri/vsuar IT i msa fetaman."
+                </p>
             </div>
-            <p class="mt-10 animate-bounce text-center text-[10px] text-zinc-500">SCROLL DOWN TO ACCESS ABOUT ME</p>
-        </div>
-    </section>
-
-    <section id="about-section">
-        <div class="terminal border-l-4 border-blue-600">
-            <h2 class="text-3xl font-bold mb-4 italic text-white uppercase tracking-tighter">About_Me</h2>
-            <div class="h-1 w-20 bg-red-600 mb-6"></div>
-            <p class="text-sm leading-relaxed text-zinc-300">
-                Gw ealah pelar main gak puais cuma pake tekerologi, fokuan Tekrniologi informatu alt Coding. 
-                Gw haus an deta atri/vsuar IT i msa fetaman. Sebagai siswa <span class="text-blue-500 font-bold">TKJ di SMKN 1 WAJO</span>, 
-                gw gak mau cuma jadi penonton, gw mau jadi pemain utama di balik layar.
-            </p>
-            <div class="mt-8 space-y-3">
-                <button class="w-full text-left p-3 border border-zinc-800 text-xs hover:bg-green-600 hover:text-black transition" onclick="window.open('https://wa.me/6282293795296')">
-                    >> HUBUNGI WHATSAPP SAYA
+            <div class="mt-10">
+                <button onclick="window.open('https://wa.me/6282293795296')" class="w-full py-3 border border-green-600 text-green-600 hover:bg-green-600 hover:text-black font-bold">
+                    HUBUNGI WHATSAPP
                 </button>
             </div>
         </div>
     </section>
 
     <script>
-        function createLines() {
-            const container = document.getElementById('lines');
-            for (let i = 0; i < 50; i++) {
-                const line = document.createElement('div');
-                line.className = 'line';
-                line.style.width = Math.random() * 2 + 'px';
-                line.style.height = Math.random() * 200 + 100 + 'px';
-                line.style.left = Math.random() * 100 + 'vw';
-                line.style.top = Math.random() * 100 + 'vh';
-                line.style.transform = `rotate(${Math.random() * 360}deg)`;
-                container.appendChild(line);
-            }
+        // Buat garis kecepatan anime
+        const container = document.getElementById('line-container');
+        for (let i = 0; i < 30; i++) {
+            const line = document.createElement('div');
+            line.className = 'speed-line';
+            line.style.left = Math.random() * 100 + 'vw';
+            line.style.animationDelay = Math.random() * 0.5 + 's';
+            container.appendChild(line);
         }
 
-        function startAnime() {
+        function triggerAnime() {
             document.getElementById('overlay').style.display = 'none';
-            const reveal = document.getElementById('anime-reveal');
-            const name = document.getElementById('char-name');
-            const lines = document.getElementById('lines');
+            const intro = document.getElementById('anime-intro');
+            const text = document.getElementById('anime-text');
+            const flash = document.getElementById('flash-effect');
             const bgm = document.getElementById('bgm');
-            
-            reveal.style.display = 'flex';
-            lines.style.display = 'block';
-            createLines();
+
+            intro.style.display = 'flex';
             bgm.play();
 
-            // Anime Sequence
-            setTimeout(() => { name.style.transform = 'scale(1)'; }, 100);
-            
+            // Suara Perkenalan
             if(window.responsiveVoice) {
-                responsiveVoice.speak("Sistem diaktifkan. Mode anime dihidupkan. Selamat datang Syahrul.", "Indonesian Male", {pitch: 0.7});
+                responsiveVoice.speak("Sistem diaktifkan. Mode anime dihidupkan. Selamat datang kembali Syahrul.", "Indonesian Male", {pitch: 0.7});
             }
 
-            // End Intro after 3 seconds
+            // Animasi Judul Zoom In
             setTimeout(() => {
-                reveal.style.opacity = '0';
-                setTimeout(() => { 
-                    reveal.style.display = 'none';
-                }, 500);
-            }, 3000);
-        }
+                text.style.transform = 'scale(1.2)';
+            }, 100);
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if(e.isIntersecting && e.target.id === 'about-section') {
-                    responsiveVoice.speak("Membuka profil tentang saya. Fokus pada teknologi informasi dan coding.", "Indonesian Male", {pitch: 0.8});
-                }
-            });
-        }, { threshold: 0.5 });
-        observer.observe(document.getElementById('about-section'));
+            // Efek Flash Putih di akhir
+            setTimeout(() => {
+                flash.style.opacity = '1';
+                flash.style.transition = 'opacity 0.2s';
+                setTimeout(() => {
+                    intro.style.display = 'none';
+                    flash.style.opacity = '0';
+                }, 300);
+            }, 2500);
+        }
     </script>
 </body>
 </html>
